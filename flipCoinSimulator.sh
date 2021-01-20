@@ -4,12 +4,14 @@ function simulateCoinFlip
 {
 echo $((RANDOM%2))
 }
+
 count_heads=0
 count_tails=0
 declare -A dict
 dict[0]=TAILS
 dict[1]=HEADS
-for((i=0;i<100;i++))
+
+while [ $count_heads -lt 21 -a $count_tails -lt 21 ]
 do
 	result=$(simulateCoinFlip)
 	echo ${dict[$result]}
@@ -18,5 +20,15 @@ do
 		1)count_heads=$((count_heads+1)) ;;
 	esac
 done
-echo "head count" $count_heads
-echo "tails count" $count_tails
+
+diff=$((count_heads-count_tails))
+echo $count_heads $count_tails
+if [ $diff -gt 0 ]
+then
+	echo "Heads won by $diff" toss
+elif [ $diff -lt 0 ]
+then
+	echo "Tails won by " $((diff*-1)) toss
+else
+	echo "Draw"
+fi
